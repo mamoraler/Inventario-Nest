@@ -17,4 +17,7 @@ descripcion:string;
  
 @Column({type:'timestamp',default : "now()"})
 createAt:Date;
+
+@Column({type:'timestamp',default : null})
+updatedAt: Date;
 }

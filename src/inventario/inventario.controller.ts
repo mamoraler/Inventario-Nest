@@ -29,7 +29,7 @@ export class InventarioController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateInventarioDto: UpdateInventarioDto) {
-    return this.inventarioService.update(+id, updateInventarioDto);
+    return this.inventarioService.updateMatPrima(id, updateInventarioDto);
   }
 
   @Delete(':id')

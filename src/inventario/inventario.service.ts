@@ -1,9 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateInventarioDto } from './dto/create-inventario.dto';
 import { UpdateInventarioDto } from './dto/update-inventario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Inventario } from './entities/inventario.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class InventarioService {
@@ -12,7 +12,9 @@ export class InventarioService {
 
   constructor(
     @InjectRepository(Inventario)
-    private readonly InventarioRepository: Repository<Inventario>
+    private readonly InventarioRepository: Repository<Inventario>,
+
+    private readonly dataSource: DataSource
     
   ) { }
 
@@ -62,8 +64,37 @@ export class InventarioService {
     return `This action returns a #${id} inventario`;
   }
 
-  update(id: number, updateInventarioDto: UpdateInventarioDto) {
-    return `This action updates a #${id} inventario`;
+  async updateMatPrima(id: string, updateInventarioDto: UpdateInventarioDto) {
+
+    const mp = await this.InventarioRepository.preload({
+      id, 
+      ...updateInventarioDto, 
+      updatedAt: new Date()
+    })
+
+    if (!mp)
+      throw new NotFoundException(`Not found record with this id ${id}`)
+
+    const queryRunner = this.dataSource.createQueryRunner()
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+
+      await queryRunner.manager.save(mp)
+
+      await queryRunner.commitTransaction();
+
+      await queryRunner.release();
+
+      return mp;
+
+    } catch (error) {
+      await queryRunner.rollbackTransaction()
+      await queryRunner.release()
+      this.logger.error(error)
+    }
+
   }
 
   remove(id: number) {
