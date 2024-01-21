@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { InventarioModule } from './inventario/inventario.module';
 import { NeumaticoModule } from './neumatico/neumatico.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -17,7 +18,8 @@ import { NeumaticoModule } from './neumatico/neumatico.module';
       synchronize: true,
   }),
     InventarioModule,
-    NeumaticoModule
+    NeumaticoModule,
+    UserModule
   ],
   controllers: [],
   providers: [],
