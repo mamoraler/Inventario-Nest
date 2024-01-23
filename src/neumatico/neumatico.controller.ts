@@ -2,21 +2,26 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { NeumaticoService } from './neumatico.service';
 import { CreateNeumaticoDto } from './dto/create-neumatico.dto';
 import { UpdateNeumaticoDto } from './dto/update-neumatico.dto';
+import { Auth } from 'src/user/decorators/auth.decorator';
+import { ValidRoles } from 'src/user/interfaces/valid-roles.interface';
 
 @Controller('neumatico')
 export class NeumaticoController {
   constructor(private readonly neumaticoService: NeumaticoService) {}
 
   @Post('create')
+  @Auth(ValidRoles.crearNeumaticos)
   create(@Body() createNeumaticoDto: CreateNeumaticoDto) {
     return this.neumaticoService.createNeumatico(createNeumaticoDto);
   }
 
   @Get()
+  @Auth(ValidRoles.cons)
   findAllneumaticos() {
     return this.neumaticoService.findAllneumaticos();
   }
   @Get('stock')
+  @Auth(ValidRoles.cons)
   findStock(){
   return this.neumaticoService.findStock();
   }
