@@ -12,5 +12,6 @@ import { UserModule } from 'src/user/user.module';
     TypeOrmModule.forFeature([ Inventario ]),
     UserModule,
   ],  
+  exports: [InventarioService, TypeOrmModule]
 })
 export class InventarioModule {}

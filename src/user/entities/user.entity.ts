@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Inventario } from "src/inventario/entities/inventario.entity";
+import { Neumatico } from "src/neumatico/entities/neumatico.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('users')
 
@@ -29,5 +31,10 @@ export class User {
     })
     roles: string[]
 
+    @OneToMany( () => Neumatico, (neumatico) => neumatico.user )
+    neumatico: Neumatico[];
+
+    @OneToMany( () => Inventario, (inventario) => inventario.user )
+    inventario: Inventario[];    
     
 }

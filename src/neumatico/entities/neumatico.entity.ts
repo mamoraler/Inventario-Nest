@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('neumaticos') 
 export class Neumatico {
@@ -17,5 +18,12 @@ export class Neumatico {
     
     @Column({type:'timestamp',default : "now()"})
     createAt:Date;
+
+    @ManyToOne(
+        () => User,
+        user => user.neumatico,
+        { eager: true }
+    )
+    user: User
 
 }

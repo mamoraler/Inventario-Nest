@@ -4,6 +4,8 @@ import { CreateNeumaticoDto } from './dto/create-neumatico.dto';
 import { UpdateNeumaticoDto } from './dto/update-neumatico.dto';
 import { Auth } from 'src/user/decorators/auth.decorator';
 import { ValidRoles } from 'src/user/interfaces/valid-roles.interface';
+import { GetUser } from 'src/user/decorators/get-user.decorator';
+import { User } from 'src/user/entities/user.entity';
 
 @Controller('neumatico')
 export class NeumaticoController {
@@ -11,8 +13,10 @@ export class NeumaticoController {
 
   @Post('create')
   @Auth(ValidRoles.crearNeumaticos)
-  create(@Body() createNeumaticoDto: CreateNeumaticoDto) {
-    return this.neumaticoService.createNeumatico(createNeumaticoDto);
+  create(
+    @GetUser() user: User,
+    @Body() createNeumaticoDto: CreateNeumaticoDto) {
+    return this.neumaticoService.createNeumatico(createNeumaticoDto, user);
   }
 
   @Get()

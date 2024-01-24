@@ -13,8 +13,10 @@ export class InventarioController {
 
   @Post('create')
   @Auth(ValidRoles.ingMatPrimas)
-  createMatPrima(@Body() createInventarioDto: CreateInventarioDto) {
-    return this.inventarioService.createMatPrima(createInventarioDto);
+  createMatPrima(
+    @GetUser() user: User,
+    @Body() createInventarioDto: CreateInventarioDto) {
+    return this.inventarioService.createMatPrima(createInventarioDto, user);
   }
 
   @Get()

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('Inventario-MatPrimas') 
 export class Inventario {
@@ -20,4 +21,11 @@ createAt:Date;
 
 @Column({type:'timestamp',default : null})
 updatedAt: Date;
+
+@ManyToOne(
+    () => User,
+    user => user.inventario,
+    { eager: true }
+)
+user: User
 }

@@ -4,6 +4,7 @@ import { UpdateInventarioDto } from './dto/update-inventario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Inventario } from './entities/inventario.entity';
 import { DataSource, Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class InventarioService {
@@ -18,10 +19,13 @@ export class InventarioService {
     
   ) { }
 
-  async createMatPrima(createInventarioDto: CreateInventarioDto) {
+  async createMatPrima(createInventarioDto: CreateInventarioDto,user: User) {
 
     try {
-      const MatPrima = this.InventarioRepository.create(createInventarioDto)
+      const MatPrima = this.InventarioRepository.create({
+        ...createInventarioDto,
+         user
+        })
       await this.InventarioRepository.save(MatPrima)
       return MatPrima;  
     } catch (error) {

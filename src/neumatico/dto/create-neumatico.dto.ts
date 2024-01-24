@@ -4,7 +4,7 @@ export class CreateNeumaticoDto {
 
 
 @IsString()
-@IsIn(['Moto','Auto','Camion','tractor'])
+@IsIn(['Moto','Auto','Camion','Tractor'])
 tipoNeumatico :string;
 
 @IsNumber()
